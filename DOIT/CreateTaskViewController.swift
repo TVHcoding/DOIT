@@ -15,7 +15,6 @@ class CreateTaskViewController: UIViewController {
     
     //var previousVC = TasksViewController() zegt welke de vorige vieuwcontroler is .
     
-    var previousVC = TasksViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,13 +24,15 @@ class CreateTaskViewController: UIViewController {
     
         // zo creër je een nieuwe taak.
         
-        let task = Task()
+       let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let task = Task(context: context)
+        
         task.name = taskNameTextField.text!
         task.important = importantSwitch.isOn
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
-        // zo voeg je de taak toe aan de vorige viewcontroller en laat je de data resfreshen 
-        previousVC.tasks.append(task)
-        previousVC.tableView.reloadData()
+        // Pop back
         navigationController!.popViewController(animated: true)
         
         
